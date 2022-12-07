@@ -4,19 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rock Paper Scissors</title>
 </head>
 <body>
-    <script>
-        //function getComputerChoice() {
-        //    let variants=(["rock", "paper", "scissors"]);
-        //    return variants[Math.floor(Math.random()*variants.length)];
-        //}
-        //let computerSelection=getComputerChoice();
-        //console.log(computerSelection);
+    <h1>Rock Paper Scissors Game</h1>
+    <p>You will play against the computer. The game will go on until one of the players has reached 5 points.</p>
+    <p>Your choice is:</p>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+    <p class="text"></p>
 
-        function playRound(playerSelection, computerSelection) {
+    <script>
+        let i=0;
+        let j=0;
+        let r=0;
+
+        function playRound(playerSelection) {
             let declaration;
+
+            function getComputerChoice() {
+            let variants=(["rock", "paper", "scissors"]);
+            return variants[Math.floor(Math.random()*variants.length)];
+                }
+            let computerSelection=getComputerChoice();
+
+            let body=document.querySelector(".text");
+            let text=document.createElement('div');
+            let result=document.createElement('div');
+
             if (playerSelection === computerSelection) {
                 declaration="It's a tie!";
             } else if (computerSelection === "paper" && playerSelection === "rock") {
@@ -31,52 +47,56 @@
                 declaration="You lost! Rock beats scissors.";
             } else if (computerSelection === "rock" && playerSelection === "paper") {
                 declaration="You won! Paper beats rock.";
-            } 
-            return declaration;
-        }
-        //let playerSelection=prompt("Choose rock, paper or scissors", "Type here");
-        //console.log("Your selection is ", playerSelection);
-        //console.log(playRound(playerSelection, computerSelection));
+            }; 
 
-        function game() {
-            let result;
-            let computerScore=0;
-            let playerScore=0;
-            for (let i=0; i<5; i++) {
-                let playerSelectionCS=prompt("Choose rock, paper or scissors", "Type here");
-                console.log("Your selection is ", playerSelectionCS);
-                let playerSelection=playerSelectionCS.toLowerCase();
-                if (playerSelection !== "rock" || playerSelection !== "paper" || playerSelection !== "scissors") {
-                    console.log("You should choose only between rock, paper and scissors.");
-                    break;
-                }
-                function getComputerChoice() {
-                let variants=(["rock", "paper", "scissors"]);
-                return variants[Math.floor(Math.random()*variants.length)];
-            }
-                let computerSelection=getComputerChoice();
-                console.log("Computer's selection is", computerSelection);
-                playRound(playerSelection, computerSelection);
-                if (playRound(playerSelection, computerSelection).charAt(4) === "w") {
-                    playerScore++;
-                } else if (playRound(playerSelection, computerSelection).charAt(4) === "l") {
-                    computerScore++;
-                } 
-            console.log(playRound(playerSelection, computerSelection), "Your score is ", playerScore);    
-            }
+            if (r===0) {
+                if (body.hasChildNodes()) {
+                body.textContent="";
+                };
+            };
 
-            if (computerScore > playerScore) {
-                result="You lost the game";
-            } else if (computerScore < playerScore) {
-                result="Congratulations! You won the game";
+            if (declaration.charAt(4)==="w") {
+                i++;
+                r++;
+            } else if (declaration.charAt(4)==="l") {
+                j++;
+                r++;
             } else {
-                result="It's a tie";
-            }
-            console.log("Your score is ", playerScore, ".", "Computer's score is ", computerScore, ".", result);
-        }
-        
-        game();
-    
+                r++;
+            };
+
+            text.textContent=`Round ${r}. You: ${playerSelection}.
+            Computer: ${computerSelection}.
+            ${declaration}
+            Your score is ${i}.
+            Computer's score is ${j}.`;
+            body.appendChild(text);
+
+            if (i===5) {
+                result.textContent="YOU WON THE GAME!";
+                body.appendChild(result);
+                i=0;
+                j=0;
+                r=0;
+            };
+            if (j===5) {
+                result.textContent="YOU LOST THE GAME!";
+                body.appendChild(result); 
+                i=0;
+                j=0;
+                r=0;
+            };
+
+            return declaration;
+            };
+            
+        const buttons=document.querySelectorAll('button');
+
+        let playerSelection=buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                playRound(button.id);
+                });
+            });
         
     </script>
 </body>
